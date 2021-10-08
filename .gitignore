@@ -1,0 +1,6 @@
+userstories.txt
+/.vscode/
+/webcontent/WEB-INF/classes/
+/webcontent/WEB-INF/lib
+/src/options.txt
+/src/sources.txt
