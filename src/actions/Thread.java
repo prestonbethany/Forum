@@ -1,6 +1,7 @@
 package actions;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -9,10 +10,11 @@ import org.apache.struts2.ServletActionContext;
 
 import database.DAO.DAOFactory;
 import database.models.Posts;
+import database.models.Threads;
 import models.Post;
 
 public class Thread extends ActionSupport {
-    private long id;
+    private long id = -1;
     private String title;
     private ArrayList<Post> posts;
 
@@ -45,11 +47,12 @@ public class Thread extends ActionSupport {
 
     @Override
     public String execute() {
-        id = Long.parseLong(ServletActionContext.getRequest().getParameter("id"));
+        if (id < 0) {
+            id = Long.parseLong(ServletActionContext.getRequest().getParameter("id"));
+        }
         List<Posts> posts = DAOFactory.getPostsDao().findAllByThreadId(id);
-        System.out.println("id = " + id);
-        System.out.println("posts variable = " + posts);
-        title = posts.get(0).getThread().getTitle();
+        title = posts.get(0).getThreadsID().getTitle();
+        this.posts = new ArrayList<Post>();
         //TODO(Preston): Optimize this later
         for (Posts post : posts) {
             Post viewPost = new Post();
@@ -61,4 +64,17 @@ public class Thread extends ActionSupport {
         } 
         return SUCCESS;
     }
+
+    public String newPost() {
+        Posts newPost = new Posts();
+        id = Long.parseLong(ServletActionContext.getRequest().getParameter("threadid"));
+        Threads currentThread = DAOFactory.getThreadsDao().findById(id);
+        newPost.setThreadsID(currentThread);
+        newPost.setText(ServletActionContext.getRequest().getParameter("message"));
+        newPost.setDateAndTimeCreated(new Date());
+        newPost.setImagePath(null);
+        DAOFactory.getPostsDao().save(newPost);
+        return execute();
+    }
+
 }

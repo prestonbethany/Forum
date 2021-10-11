@@ -8,14 +8,14 @@ public class DAOFactory {
 
     public static ThreadsDAO getThreadsDao() {
         if (threadsDao == null) {
-            threadsDao = new ThreadsDAO(SessionManager.getSessionFactory().getCurrentSession());
+            threadsDao = new ThreadsDAO(SessionManager.getSessionFactory());
         } 
         return threadsDao;
     }
 
     public static PostsDAO getPostsDao() {
         if (postsDao == null) {
-            postsDao = new PostsDAO(SessionManager.getSessionFactory().getCurrentSession());
+            postsDao = new PostsDAO(SessionManager.getSessionFactory());
         } 
         return postsDao;
     }

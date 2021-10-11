@@ -4,7 +4,7 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
-        <title><s:param name="title"></s:param></title>
+        <title>Title</title>
     </head>
     <body>
         <s:label key="title" />
@@ -14,5 +14,16 @@
                 <s:label key="creationDateTime" /><br>
             </div>
         </s:iterator>
+        <br>
+        <form method="post" action="makepost">
+            <s:hidden name="threadid" value="%{id}"/>
+            <div class="postbody">
+                <textarea name="message" rows="20" cols="98">Your post goes here.</textarea>
+            </div>
+            <div class="submitbutton">
+                <input type="submit" value="Post">
+            </div>
+            <br>
+        </form>
     </body>
 </html>

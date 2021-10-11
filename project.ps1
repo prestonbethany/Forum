@@ -29,6 +29,7 @@ $appFolderName = "Forum"
     "fet`tfetchlibs`tDownload project dependancies."
     "d`tdeploy`t`tDeploys the application to the tomcat server."
     "st`tstart`t`tStarts the tomcat server."
+    "dbg`tdebug`t`tStarts the tomcat server in debug mode (Requires user-created debug file)."
     "sh`tshutdown`tShuts the tomcat sever down."
     "cln`tclean`t`tDelete all compiled sources."
     "cmp`tcompile`t`tCompiles the project."
@@ -53,6 +54,7 @@ foreach ($option in $args) {
         'fet', 'fetchlibs', 
         'd', 'deploy',
         'st', 'start',
+        'dbg', 'debug',
         'sh', 'shutdown'
         ).Contains($option))){
         softExit
@@ -112,8 +114,15 @@ foreach($option in $args) {
             & ($env:CATALINA_HOME + "\bin\startup.bat")
         }
 
+        #Debug
+        {($option -eq "dbg") -or ($option -eq "debug")}{
+            "Starting Tomcat in debug mode..."
+            <# & specifies I want to run the bat file inside the current powershell session #>
+            & ($env:CATALINA_HOME + "\bin\debug.bat")
+        }
+
         #Shutdown
-        {($option -eq "sh") -or ($option -eq "sh")}{
+        {($option -eq "sh") -or ($option -eq "shutdown")}{
             "Stopping Tomcat..."
             & ($env:CATALINA_HOME + "\bin\shutdown.bat")
         }
@@ -125,7 +134,7 @@ foreach($option in $args) {
                 Remove-Item ($env:CATALINA_HOME + "\webapps\" + $appFolderName) -Recurse
                 "Done!"
             } else {
-                ("Error: Webapp `"" + $appFolderName + "`" not found on Tomcat server! Delete canceled!")
+                ("Error: Webapp `"" + $appFolderName + "`" not found on Tomcat server! Delete cancelled!")
             }
         }
 

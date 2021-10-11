@@ -17,11 +17,11 @@ import javax.persistence.Table;
 public class Posts implements Serializable{
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
-    @JoinColumn(name = "ThreadID")
-    private Threads thread;
+    @JoinColumn(name = "ThreadsID")
+    private Threads threadsID;
     @Column(name = "Text")
     private String text;
     @Column(name = "ImagePath")
@@ -36,11 +36,11 @@ public class Posts implements Serializable{
     public void setId(long id) {
         this.id = id;
     }
-    public Threads getThread() {
-        return thread;
+    public Threads getThreadsID() {
+        return threadsID;
     }
-    public void setThread(Threads thread) {
-        this.thread = thread;
+    public void setThreadsID(Threads threadsID) {
+        this.threadsID = threadsID;
     }
     public String getText() {
         return text;
