@@ -55,7 +55,8 @@ foreach ($option in $args) {
         'd', 'deploy',
         'st', 'start',
         'dbg', 'debug',
-        'sh', 'shutdown'
+        'sh', 'shutdown',
+        'del', 'delete'
         ).Contains($option))){
         softExit
     }

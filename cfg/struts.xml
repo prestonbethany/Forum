@@ -4,11 +4,14 @@
     "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
     <package name="shadowlands" extends="struts-default">
-        <action name="thread" class="actions.Thread" method="execute">
+        <action name="thread" class="view.actions.ThreadAction" method="execute">
             <result name="success">jsp/viewthread.jsp</result>
         </action>
-        <action name="makepost" class="actions.Thread" method="newPost">
+        <action name="makepost" class="view.actions.ThreadAction" method="newPost">
             <result name="success">jsp/viewthread.jsp</result>
+        </action>
+        <action name="main" class="view.actions.MainAction" method="execute">
+            <result name="success">jsp/main.jsp</result>
         </action>
     </package>
 </struts>

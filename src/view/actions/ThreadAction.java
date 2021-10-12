@@ -1,4 +1,4 @@
-package actions;
+package view.actions;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,9 +11,9 @@ import org.apache.struts2.ServletActionContext;
 import database.DAO.DAOFactory;
 import database.models.Posts;
 import database.models.Threads;
-import models.Post;
+import view.models.Post;
 
-public class Thread extends ActionSupport {
+public class ThreadAction extends ActionSupport {
     private long id = -1;
     private String title;
     private ArrayList<Post> posts;
