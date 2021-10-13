@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Threads implements Serializable{
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "Title")
     private String title;

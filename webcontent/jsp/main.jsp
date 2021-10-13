@@ -3,14 +3,16 @@
 <%@ taglib prefix = "s" uri = "/struts-tags" %> 
 <html>
     <head>
-        <title></title>
+        <title>Index</title>
     </head>
     <body>
         <s:iterator value="threadList">
             <div class="threads">
-                <s:label key="title" /><br>
+                <s:a href="/Forum/thread?threadid=%{id}"><s:label key="title" /></s:a>
+                <br>
                 <s:label key="dateTimeCreated" /><br>
             </div>
         </s:iterator>
+        <button onclick="location.href='makethreadpage'">Make a New Post</button>
     </body>
 </html>

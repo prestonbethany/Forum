@@ -39,4 +39,21 @@ public class ThreadsDAO {
         transaction.commit();
         return threadList;
     }
+
+    public long save(Threads threads) {
+        Transaction transaction = null;
+        long threadId = -1;
+        try {
+            Session currentSession = sessionFactory.getCurrentSession();
+            transaction = currentSession.beginTransaction();
+            threadId = (Long)currentSession.save(threads);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return threadId;
+    }
 }

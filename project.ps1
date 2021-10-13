@@ -1,5 +1,5 @@
 <#
- # Project Maker for Java Packaging
+ # Project Maker for Deploying a Webapp to a Local Machine
  # Written by: Preston Bethany
  # 
  # Usage notes can be accessed by simply running the script with no args or
@@ -13,6 +13,8 @@
 
 # Script Variables #
 $appFolderName = "Forum"
+<#Before changing this, make sure you've configured MariaDB's my.ini to contain your username and password!!!#>
+$mariaDBLocation = "..\mariadb-10.6.4-winx64\bin\"
 
 #Script Globals #
 
@@ -26,8 +28,11 @@ $appFolderName = "Forum"
     "Written by: Preston Bethany"
     "`nUsage notes:"
     "h`thelp`t`tDisplays this message."
+    "dbstart`t`tStarts up MariaDB.(DO NOT USE IF YOU HAVE NOT CONFIGURED MariaDB's my.ini!!!)"
+    "dbstop`t`tSafely shuts down MariaDB (Requires MariaDB's my.ini file to be configured with your username and password)."
     "fet`tfetchlibs`tDownload project dependancies."
     "d`tdeploy`t`tDeploys the application to the tomcat server."
+    "del`tdelete`t`tDeletes the entire application from Tomcat."
     "st`tstart`t`tStarts the tomcat server."
     "dbg`tdebug`t`tStarts the tomcat server in debug mode (Requires user-created debug file)."
     "sh`tshutdown`tShuts the tomcat sever down."
@@ -56,7 +61,9 @@ foreach ($option in $args) {
         'st', 'start',
         'dbg', 'debug',
         'sh', 'shutdown',
-        'del', 'delete'
+        'del', 'delete',
+        'dbstart',
+        'dbstop'
         ).Contains($option))){
         softExit
     }
@@ -65,6 +72,24 @@ foreach ($option in $args) {
 # Process commands in order
 foreach($option in $args) {
     switch ($options) {
+
+        #MariaDB Start
+        {($option -eq "dbstart")}{
+            "Starting MariaDB..."
+            Push-Location $mariaDBLocation
+            <#Start-Process ensures that MariaDB opens in a new instance of Powershell. #>
+            Start-Process .\mariadbd.exe --console
+            Pop-Location
+        }
+
+        #MariaDB Shutdown
+        {($option -eq "dbstop")}{
+            "Stopping MariaDB..."
+            Push-Location $mariaDBLocation
+            .\mariadb-admin.exe shutdown
+            Pop-Location
+        }
+        
 
         #Clean
         {($option -eq "cln") -or ($option -eq "clean")} {

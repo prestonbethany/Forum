@@ -14,7 +14,7 @@ import database.models.Threads;
 import view.models.Post;
 
 public class ThreadAction extends ActionSupport {
-    private long id = -1;
+    private long id;
     private String title;
     private ArrayList<Post> posts;
 
@@ -45,36 +45,55 @@ public class ThreadAction extends ActionSupport {
 
     //Controller methods
 
+    private void addDbPostToView(Posts dbPost) {
+        Post viewPost = new Post();
+        viewPost.id = dbPost.getId();
+        viewPost.content = dbPost.getText();
+        viewPost.imagePath = dbPost.getImagePath();
+        viewPost.creationDateTime = dbPost.getDateAndTimeCreated();
+        this.posts.add(viewPost);
+    }
+
+    private void createPost(Threads thread) {
+        Posts post = new Posts();
+        post.setThreadsID(thread);
+        post.setText(ServletActionContext.getRequest().getParameter("message"));
+        post.setDateAndTimeCreated(new Date());
+        post.setImagePath(null);
+        post.setId(DAOFactory.getPostsDao().save(post));
+        addDbPostToView(post);
+    }
+
     @Override
     public String execute() {
-        if (id < 0) {
-            id = Long.parseLong(ServletActionContext.getRequest().getParameter("id"));
-        }
+        id = Long.parseLong(ServletActionContext.getRequest().getParameter("threadid"));
         List<Posts> posts = DAOFactory.getPostsDao().findAllByThreadId(id);
         title = posts.get(0).getThreadsID().getTitle();
         this.posts = new ArrayList<Post>();
-        //TODO(Preston): Optimize this later
-        for (Posts post : posts) {
-            Post viewPost = new Post();
-            viewPost.id = post.getId();
-            viewPost.content = post.getText();
-            viewPost.imagePath = post.getImagePath();
-            viewPost.creationDateTime = post.getDateAndTimeCreated();
-            this.posts.add(viewPost);
+        for (Posts dbPost : posts) {
+            addDbPostToView(dbPost);
         } 
         return SUCCESS;
     }
 
     public String newPost() {
-        Posts newPost = new Posts();
-        id = Long.parseLong(ServletActionContext.getRequest().getParameter("threadid"));
+        execute();
         Threads currentThread = DAOFactory.getThreadsDao().findById(id);
-        newPost.setThreadsID(currentThread);
-        newPost.setText(ServletActionContext.getRequest().getParameter("message"));
-        newPost.setDateAndTimeCreated(new Date());
-        newPost.setImagePath(null);
-        DAOFactory.getPostsDao().save(newPost);
-        return execute();
+        createPost(currentThread);
+        return SUCCESS;
     }
 
+    public String newThread() {
+        Threads newThread = new Threads();
+        this.title = ServletActionContext.getRequest().getParameter("title");
+        newThread.setTitle(title);
+        this.id = DAOFactory.getThreadsDao().save(newThread);
+        this.posts = new ArrayList<Post>();
+        createPost(newThread);
+        return SUCCESS;
+    }
+
+    public String input() {
+        return INPUT;
+    }
 }

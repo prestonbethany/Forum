@@ -42,13 +42,13 @@ public class PostsDAO {
         return posts;
     }
 
-    public void save(Posts posts) {
+    public long save(Posts posts) {
         Transaction transaction = null;
-        
+        long postId = -1;
         try {
             Session currentSession = sessionFactory.getCurrentSession();
             transaction = currentSession.beginTransaction();
-            currentSession.saveOrUpdate(posts);
+            postId = (Long)currentSession.save(posts);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -56,5 +56,6 @@ public class PostsDAO {
             }
             e.printStackTrace();
         }
+        return postId;
     }
 }
