@@ -19,5 +19,8 @@
         <action name="main" class="view.actions.MainAction" method="execute">
             <result name="success">jsp/main.jsp</result>
         </action>
+        <action name="archive" class="view.actions.MainAction" method="archivedExecute">
+            <result name="success">jsp/main.jsp</result>
+        </action>
     </package>
 </struts>

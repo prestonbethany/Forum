@@ -12,6 +12,15 @@ import view.models.Thread;
 
 public class MainAction extends ActionSupport {
     private List<Thread> threadList;
+    private boolean archivedFlag;
+
+    public boolean isArchivedFlag() {
+        return archivedFlag;
+    }
+
+    public void setArchivedFlag(boolean archivedFlag) {
+        this.archivedFlag = archivedFlag;
+    }
 
     public List<Thread> getThreadList() {
         return threadList;
@@ -21,10 +30,9 @@ public class MainAction extends ActionSupport {
         this.threadList = threadList;
     }
 
-    @Override
-    public String execute() {
+    private void checkArchive(boolean isArchived) {
         this.threadList = new ArrayList<Thread>();
-        List<Threads> dbThreadList = DAOFactory.getThreadsDao().findAll();
+        List<Threads> dbThreadList = DAOFactory.getThreadsDao().findAll(isArchived);
         for (Threads dbThread : dbThreadList) {
             Thread viewThread = new Thread();
             viewThread.id = dbThread.getId();
@@ -34,6 +42,18 @@ public class MainAction extends ActionSupport {
             viewThread.imagePath = dbPostList.get(0).getImagePath();
             threadList.add(viewThread);
         }
+    }
+
+    @Override
+    public String execute() {
+        archivedFlag = false;
+        checkArchive(false);
+        return SUCCESS;
+    }
+
+    public String archivedExecute() {
+        archivedFlag = true;
+        checkArchive(true);
         return SUCCESS;
     }
 }

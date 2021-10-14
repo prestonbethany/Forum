@@ -7,4 +7,5 @@ public class Thread {
     public String title;
     public Date dateTimeCreated;
     public String imagePath;
+    public boolean archivedFlag;
 }

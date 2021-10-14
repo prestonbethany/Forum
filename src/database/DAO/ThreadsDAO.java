@@ -27,14 +27,14 @@ public class ThreadsDAO {
         return threads;
     }
 
-    public List<Threads> findAll() {
+    public List<Threads> findAll(boolean isArchived) {
         Session currentSession = sessionFactory.getCurrentSession();
         Transaction transaction = currentSession.beginTransaction();
         CriteriaBuilder criteriaBuilder = currentSession.getCriteriaBuilder();
         CriteriaQuery<Threads> criteriaQuery = criteriaBuilder.createQuery(Threads.class);
-        //Root selects the columns from the model that is passed in.
+        //Root selects all columns from the model that is passed in.
         Root<Threads> root = criteriaQuery.from(Threads.class);
-        criteriaQuery.select(root);
+        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("archivedFlag"), isArchived));
         List<Threads> threadList = currentSession.createQuery(criteriaQuery).getResultList();
         transaction.commit();
         return threadList;
