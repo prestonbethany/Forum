@@ -9,16 +9,17 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 import database.DAO.DAOFactory;
-import database.models.Posts;
-import database.models.Threads;
+import database.models.Thread;
 import view.models.Post;
 
 public class ThreadAction extends ActionSupport {
     private long id;
     private String title;
     private ArrayList<Post> posts;
+    private boolean archived;
 
     //Getters and Setters
+    
     public long getId() {
         return id;
     }
@@ -43,9 +44,17 @@ public class ThreadAction extends ActionSupport {
         this.posts = posts;
     }
 
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
     //Controller methods
 
-    private void addDbPostToView(Posts dbPost) {
+    private void addDbPostToView(database.models.Post dbPost) {
         Post viewPost = new Post();
         viewPost.id = dbPost.getId();
         viewPost.content = dbPost.getText();
@@ -54,23 +63,26 @@ public class ThreadAction extends ActionSupport {
         this.posts.add(viewPost);
     }
 
-    private void createPost(Threads thread) {
-        Posts post = new Posts();
-        post.setThreadsID(thread);
+    private void createPost(Thread thread) {
+        database.models.Post post = new database.models.Post();
+        post.setThreadID(thread);
         post.setText(ServletActionContext.getRequest().getParameter("message"));
         post.setDateAndTimeCreated(new Date());
         post.setImagePath(null);
-        post.setId(DAOFactory.getPostsDao().save(post));
-        addDbPostToView(post);
+        post.setId(DAOFactory.getPostDao().save(post));
+        if (post.getId() != -1){
+            addDbPostToView(post);
+        }
     }
 
     @Override
     public String execute() {
         id = Long.parseLong(ServletActionContext.getRequest().getParameter("threadid"));
-        List<Posts> posts = DAOFactory.getPostsDao().findAllByThreadId(id);
-        title = posts.get(0).getThreadsID().getTitle();
+        List<database.models.Post> posts = DAOFactory.getPostDao().findAllByThreadId(id);
+        title = posts.get(0).getThreadID().getTitle();
+        archived = posts.get(0).getThreadID().isArchivedFlag();
         this.posts = new ArrayList<Post>();
-        for (Posts dbPost : posts) {
+        for (database.models.Post dbPost : posts) {
             addDbPostToView(dbPost);
         } 
         return SUCCESS;
@@ -78,16 +90,16 @@ public class ThreadAction extends ActionSupport {
 
     public String newPost() {
         execute();
-        Threads currentThread = DAOFactory.getThreadsDao().findById(id);
+        Thread currentThread = DAOFactory.getThreadDao().findById(id);
         createPost(currentThread);
         return SUCCESS;
     }
 
     public String newThread() {
-        Threads newThread = new Threads();
+        Thread newThread = new Thread();
         this.title = ServletActionContext.getRequest().getParameter("title");
         newThread.setTitle(title);
-        this.id = DAOFactory.getThreadsDao().save(newThread);
+        this.id = DAOFactory.getThreadDao().save(newThread);
         this.posts = new ArrayList<Post>();
         createPost(newThread);
         return SUCCESS;

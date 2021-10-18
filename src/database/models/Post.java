@@ -13,15 +13,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "posts")
-public class Posts implements Serializable{
+@Table(name = "post")
+public class Post implements Serializable{
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
-    @JoinColumn(name = "ThreadsID")
-    private Threads threadsID;
+    @JoinColumn(name = "ThreadID")
+    private Thread threadID;
     @Column(name = "Text")
     private String text;
     @Column(name = "ImagePath")
@@ -36,11 +36,11 @@ public class Posts implements Serializable{
     public void setId(long id) {
         this.id = id;
     }
-    public Threads getThreadsID() {
-        return threadsID;
+    public Thread getThreadID() {
+        return threadID;
     }
-    public void setThreadsID(Threads threadsID) {
-        this.threadsID = threadsID;
+    public void setThreadID(Thread threadID) {
+        this.threadID = threadID;
     }
     public String getText() {
         return text;

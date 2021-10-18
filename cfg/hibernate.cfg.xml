@@ -25,8 +25,8 @@
         <property name="hibernate.current_session_context_class">thread</property>
         
         <!--Class mapping-->
-        <mapping class="database.models.Posts" />
-        <mapping class="database.models.Threads" />
+        <mapping class="database.models.Post" />
+        <mapping class="database.models.Thread" />
 
     </session-factory>
 </hibernate-configuration>

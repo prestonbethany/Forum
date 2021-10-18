@@ -26,7 +26,7 @@
                 <s:label key="dateTimeCreated" /><br>
             </div>
         </s:iterator>
-        <button onclick="location.href='makethreadpage'">Make a New Post</button>
+        <button onclick="location.href='makethreadpage'">Make a New Thread</button>
     </s:else>
     </body>
 </html>

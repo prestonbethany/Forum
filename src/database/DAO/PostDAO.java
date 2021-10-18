@@ -10,27 +10,27 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import database.models.Posts;
+import database.models.Post;
 
-public class PostsDAO {
+public class PostDAO {
     private SessionFactory sessionFactory;
     
-    public PostsDAO(SessionFactory sessionFactory) {
+    public PostDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Posts> findAllByThreadId(long threadId) {
+    public List<Post> findAllByThreadId(long threadId) {
         //Hibernate requires a transaction to interact with the database.
         Transaction transaction = null;
-        List<Posts> posts = null;
+        List<Post> posts = null;
         try {
             Session currentSession = sessionFactory.getCurrentSession();
             transaction = currentSession.beginTransaction();
             CriteriaBuilder criteriaBuilder = currentSession.getCriteriaBuilder();
-            CriteriaQuery<Posts> criteriaQuery = criteriaBuilder.createQuery(Posts.class);
+            CriteriaQuery<Post> criteriaQuery = criteriaBuilder.createQuery(Post.class);
             //Root selects the columns from the model that is passed in.
-            Root<Posts> root = criteriaQuery.from(Posts.class);
-            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("threadsID"), threadId));
+            Root<Post> root = criteriaQuery.from(Post.class);
+            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("threadID"), threadId));
             posts = currentSession.createQuery(criteriaQuery).getResultList();
             transaction.commit();
         } catch (Exception e) {
@@ -42,13 +42,13 @@ public class PostsDAO {
         return posts;
     }
 
-    public long save(Posts posts) {
+    public long save(Post post) {
         Transaction transaction = null;
         long postId = -1;
         try {
             Session currentSession = sessionFactory.getCurrentSession();
             transaction = currentSession.beginTransaction();
-            postId = (Long)currentSession.save(posts);
+            postId = (Long)currentSession.save(post);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

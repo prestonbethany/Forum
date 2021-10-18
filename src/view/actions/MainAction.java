@@ -6,8 +6,7 @@ import java.util.List;
 import com.opensymphony.xwork2.ActionSupport;
 
 import database.DAO.DAOFactory;
-import database.models.Posts;
-import database.models.Threads;
+import database.models.Post;
 import view.models.Thread;
 
 public class MainAction extends ActionSupport {
@@ -32,12 +31,12 @@ public class MainAction extends ActionSupport {
 
     private void checkArchive(boolean isArchived) {
         this.threadList = new ArrayList<Thread>();
-        List<Threads> dbThreadList = DAOFactory.getThreadsDao().findAll(isArchived);
-        for (Threads dbThread : dbThreadList) {
+        List<database.models.Thread> dbThreadList = DAOFactory.getThreadDao().findAll(isArchived);
+        for (database.models.Thread dbThread : dbThreadList) {
             Thread viewThread = new Thread();
             viewThread.id = dbThread.getId();
             viewThread.title = dbThread.getTitle();
-            List<Posts> dbPostList = DAOFactory.getPostsDao().findAllByThreadId(viewThread.id);
+            List<Post> dbPostList = DAOFactory.getPostDao().findAllByThreadId(viewThread.id);
             viewThread.dateTimeCreated = dbPostList.get(0).getDateAndTimeCreated();
             viewThread.imagePath = dbPostList.get(0).getImagePath();
             threadList.add(viewThread);

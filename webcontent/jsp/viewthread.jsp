@@ -15,15 +15,17 @@
             </div>
         </s:iterator>
         <br>
-        <form method="post" action="makepost">
-            <s:hidden name="threadid" value="%{id}"/>
-            <div class="postbody">
-                <textarea name="message" rows="20" cols="98">Your post goes here.</textarea>
-            </div>
-            <div class="submitbutton">
-                <input type="submit" value="Post">
-            </div>
-            <br>
-        </form>
+        <s:if test="%{archived == false}">
+            <form method="post" action="makepost">
+                <s:hidden name="threadid" value="%{id}"/>
+                <div class="postbody">
+                    <textarea name="message" rows="20" cols="98">Your post goes here.</textarea>
+                </div>
+                <div class="submitbutton">
+                    <input type="submit" value="Post">
+                </div>
+                <br>
+            </form>
+        </s:if>
     </body>
 </html>

@@ -1,4 +1,4 @@
-CREATE TABLE Roles (
+CREATE TABLE Role (
     ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
     Name varchar(25) NOT NULL,
     LoginToApp BIT NOT NULL DEFAULT 0,
@@ -8,17 +8,17 @@ CREATE TABLE Roles (
     CreateModerator BIT NOT NULL DEFAULT 0,
     PRIMARY KEY (ID)
 ) ENGINE = InnoDB;
-CREATE TABLE Users (
+CREATE TABLE User (
     ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    RolesID INT UNSIGNED NOT NULL,
+    RoleID INT UNSIGNED NOT NULL,
     Name varchar(50) NOT NULL,
     Password CHAR(64) NOT NULL,
     EmailAddress varchar(254) NOT NULL,
     PRIMARY KEY (ID),
-    CONSTRAINT `fk_users_roles`
-        FOREIGN KEY (RolesID) REFERENCES Roles(ID)
+    CONSTRAINT `fk_user_role`
+        FOREIGN KEY (RoleID) REFERENCES Role(ID)
 ) ENGINE = InnoDB;
-CREATE TABLE Threads (
+CREATE TABLE Thread (
     ID BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     Title varchar(255) NOT NULL,
     TimeToLive TINYINT UNSIGNED NOT NULL default 30,
@@ -26,15 +26,15 @@ CREATE TABLE Threads (
     ArchivedFlag BIT NOT NULL DEFAULT 0,
     PRIMARY KEY (ID)
 ) ENGINE = InnoDB;
-CREATE TABLE Posts (
+CREATE TABLE Post (
     ID BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    ThreadsID BIGINT UNSIGNED NOT NULL,
+    ThreadID BIGINT UNSIGNED NOT NULL,
     Text varchar(2000) NOT NULL,
     ImagePath varchar(1024) DEFAULT '',
     DateAndTimeCreated DATETIME NOT NULL,
     PRIMARY KEY (ID),
-    CONSTRAINT `fk_posts_threads`
-        FOREIGN KEY (ThreadsID) REFERENCES Threads(ID)
+    CONSTRAINT `fk_post_thread`
+        FOREIGN KEY (ThreadID) REFERENCES Thread(ID)
         ON DELETE CASCADE
         ON UPDATE RESTRICT
 ) ENGINE = InnoDB;

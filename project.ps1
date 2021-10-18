@@ -106,14 +106,14 @@ foreach($option in $args) {
         {($option -eq "cmp") -or ($option -eq "compile")} {
             "Please do not exit your terminal, writing to files..."
             Push-Location ".\src\"
-            Set-Content -Encoding "utf8NoBOM" -Path .\options.txt -Value "-classpath " -NoNewline
+            Set-Content -Encoding "Ascii" -Path .\options.txt -Value "-classpath " -NoNewline
             <#Get-ChildItem collects the requested directory contents in a string array. 
             The FullName method ensures that these are recorded in the array as absolute paths. 
             -Join takes the array and concatenates each string together as one string,
             separated by the operator provided (in this case, a semicolon).#>
-            Add-Content -Encoding "utf8NoBOM" -Path .\options.txt -Value ((Get-ChildItem -Path "..\webcontent\WEB-INF\lib", "..\..\apache-tomcat-9.0.43\lib" -Recurse -Include *.jar).FullName -Join ";")
-            Set-Content -Encoding "utf8NoBOM" .\sources.txt "-d ..\webcontent\WEB-INF\classes\"
-            Get-ChildItem -Path ".\" -Recurse -Include *.java -Name | Add-Content -Encoding "utf8NoBOM" .\sources.txt
+            Add-Content -Encoding "Ascii" -Path .\options.txt -Value ((Get-ChildItem -Path "..\webcontent\WEB-INF\lib", "..\..\apache-tomcat-9.0.43\lib" -Recurse -Include *.jar).FullName -Join ";")
+            Set-Content -Encoding "Ascii" .\sources.txt "-d ..\webcontent\WEB-INF\classes\"
+            Get-ChildItem -Path ".\" -Recurse -Include *.java -Name | Add-Content -Encoding "Ascii" .\sources.txt
             "Compiling..."
             & javac "@options.txt" "@sources.txt" 
             Pop-Location

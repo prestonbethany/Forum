@@ -3,20 +3,20 @@ package database.DAO;
 import database.SessionManager;
 
 public class DAOFactory {
-    private static ThreadsDAO threadsDao;
-    private static PostsDAO postsDao;
+    private static ThreadDAO threadDao;
+    private static PostDAO postDao;
 
-    public static ThreadsDAO getThreadsDao() {
-        if (threadsDao == null) {
-            threadsDao = new ThreadsDAO(SessionManager.getSessionFactory());
+    public static ThreadDAO getThreadDao() {
+        if (threadDao == null) {
+            threadDao = new ThreadDAO(SessionManager.getSessionFactory());
         } 
-        return threadsDao;
+        return threadDao;
     }
 
-    public static PostsDAO getPostsDao() {
-        if (postsDao == null) {
-            postsDao = new PostsDAO(SessionManager.getSessionFactory());
+    public static PostDAO getPostDao() {
+        if (postDao == null) {
+            postDao = new PostDAO(SessionManager.getSessionFactory());
         } 
-        return postsDao;
+        return postDao;
     }
 }
