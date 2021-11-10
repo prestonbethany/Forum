@@ -5,6 +5,8 @@ import database.SessionManager;
 public class DAOFactory {
     private static ThreadDAO threadDao;
     private static PostDAO postDao;
+    private static UserDAO userDao;
+    private static RoleDAO roleDao;
 
     public static ThreadDAO getThreadDao() {
         if (threadDao == null) {
@@ -18,5 +20,19 @@ public class DAOFactory {
             postDao = new PostDAO(SessionManager.getSessionFactory());
         } 
         return postDao;
+    }
+
+    public static UserDAO getUserDao() {
+        if (userDao == null) {
+            userDao = new UserDAO(SessionManager.getSessionFactory());
+        } 
+        return userDao;
+    }
+
+    public static RoleDAO getRoleDao() {
+        if (roleDao == null) {
+            roleDao = new RoleDAO(SessionManager.getSessionFactory());
+        } 
+        return roleDao;
     }
 }

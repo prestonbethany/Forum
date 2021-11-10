@@ -26,7 +26,8 @@
         
         <!--Class mapping-->
         <mapping class="database.models.Post" />
+        <mapping class="database.models.Role" />
         <mapping class="database.models.Thread" />
-
+        <mapping class="database.models.User" />
     </session-factory>
 </hibernate-configuration>

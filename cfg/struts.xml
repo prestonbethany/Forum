@@ -22,5 +22,10 @@
         <action name="archive" class="view.actions.MainAction" method="archivedExecute">
             <result name="success">jsp/main.jsp</result>
         </action>
+        <action name="login" class="view.actions.LoginAction" method="execute">
+            <result name="input">jsp/login.jsp</result>
+            <result name="error">jsp/login.jsp</result>
+            <result name="success">jsp/welcome.jsp</result>
+        </action>
     </package>
 </struts>

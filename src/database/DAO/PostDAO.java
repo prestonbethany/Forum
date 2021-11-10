@@ -20,7 +20,6 @@ public class PostDAO {
     }
 
     public List<Post> findAllByThreadId(long threadId) {
-        //Hibernate requires a transaction to interact with the database.
         Transaction transaction = null;
         List<Post> posts = null;
         try {
@@ -28,7 +27,6 @@ public class PostDAO {
             transaction = currentSession.beginTransaction();
             CriteriaBuilder criteriaBuilder = currentSession.getCriteriaBuilder();
             CriteriaQuery<Post> criteriaQuery = criteriaBuilder.createQuery(Post.class);
-            //Root selects the columns from the model that is passed in.
             Root<Post> root = criteriaQuery.from(Post.class);
             criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("threadID"), threadId));
             posts = currentSession.createQuery(criteriaQuery).getResultList();

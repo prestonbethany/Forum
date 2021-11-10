@@ -28,5 +28,6 @@
         </s:iterator>
         <button onclick="location.href='makethreadpage'">Make a New Thread</button>
     </s:else>
+    <button onclick="location.href='login'">Log In</button>
     </body>
 </html>

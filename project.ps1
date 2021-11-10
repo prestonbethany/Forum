@@ -39,7 +39,7 @@ $mariaDBLocation = "..\mariadb-10.6.4-winx64\bin\"
     "cln`tclean`t`tDelete all compiled sources."
     "cmp`tcompile`t`tCompiles the project."
     "war`tArchives the project in a WAR file."
-    "`nExample:`n.\project.sp1 clean compile "
+    "`nExample:`n.\project.ps1 clean compile "
     "`nThis will delete the binaries in the build directory, then compile the project."
     exit
 }
@@ -155,6 +155,8 @@ foreach($option in $args) {
 
         #Delete
         {($option -eq "del") -or ($option -eq "delete")}{
+            "Waiting 3 seconds in case server shutdown is in progress..."
+            Start-Sleep -Seconds 3
             "Deleting app from Tomcat..."
             if (Test-Path ($env:CATALINA_HOME + "\webapps\" + $appFolderName)) {
                 Remove-Item ($env:CATALINA_HOME + "\webapps\" + $appFolderName) -Recurse

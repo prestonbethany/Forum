@@ -1,7 +1,5 @@
 package database.DAO;
 
-import java.util.List;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -10,42 +8,34 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import database.models.Thread;
+import database.models.User;
 
-public class ThreadDAO {
+public class UserDAO {
     private SessionFactory sessionFactory;
     
-    public ThreadDAO(SessionFactory sessionFactory) {
+    public UserDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public Thread findById(long id) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        Transaction transaction = currentSession.beginTransaction();
-        Thread threads = currentSession.get(Thread.class, id);
-        transaction.commit();
-        return threads;
-    }
-
-    public List<Thread> findAll(boolean isArchived) {
+    public User findByName(String userName) {
         Session currentSession = sessionFactory.getCurrentSession();
         Transaction transaction = currentSession.beginTransaction();
         CriteriaBuilder criteriaBuilder = currentSession.getCriteriaBuilder();
-        CriteriaQuery<Thread> criteriaQuery = criteriaBuilder.createQuery(Thread.class);
-        Root<Thread> root = criteriaQuery.from(Thread.class);
-        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("archivedFlag"), isArchived));
-        List<Thread> threadList = currentSession.createQuery(criteriaQuery).getResultList();
+        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("userName"), userName));
+        User user = currentSession.createQuery(criteriaQuery).getSingleResult();
         transaction.commit();
-        return threadList;
+        return user;
     }
 
-    public long save(Thread thread) {
+    public String save(User user) {
         Transaction transaction = null;
-        long threadId = -1;
+        String name = null;
         try {
             Session currentSession = sessionFactory.getCurrentSession();
             transaction = currentSession.beginTransaction();
-            threadId = (Long)currentSession.save(thread);
+            name = (String)currentSession.save(user);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -53,6 +43,6 @@ public class ThreadDAO {
             }
             e.printStackTrace();
         }
-        return threadId;
+        return name;
     }
 }

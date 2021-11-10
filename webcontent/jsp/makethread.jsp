@@ -2,7 +2,7 @@
 <%@ page contentType = "text/html; charset = UTF-8" %>
 <%@ taglib prefix = "s" uri = "/struts-tags" %> 
 <html>
-    <head><title>MakeThread</title></head>
+    <head><title>Make Thread</title></head>
     <form method="post" action="makethread">
         <s:hidden name="threadid" value="%{id}"/>
         <div class="threadtitle">
